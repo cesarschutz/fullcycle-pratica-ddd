@@ -1,24 +1,7 @@
 import { AggregateRoot } from '../../../common/domain/aggregate-root';
 import { PartnerId } from './partner.entity';
 import Uuid from '../../../common/domain/value-objects/uuid.vo';
-//import { EventSection, EventSectionId } from './event-section';
-//import {
-//  AnyCollection,
-//  ICollection,
-//  MyCollectionFactory,
-//} from '../../../common/domain/my-collection';
-//import { EventSpotId } from './event-spot';
-//import { EventCreated } from '../events/domain-events/event-created.event';
-//import { EventChangedName } from '../events/domain-events/event-changed-name.event';
-//import { EventChangedDescription } from '../events/domain-events/event-changed-description.event';
-//import { EventChangedDate } from '../events/domain-events/event-changed-date.event';
-//import { EventPublishAll } from '../events/domain-events/event-publish-all.event';
-//import { EventPublish } from '../events/domain-events/event-publish.event';
-//import { EventUnpublish } from '../events/domain-events/event-unpublish.event';
-//import { EventAddedSection } from '../events/domain-events/event-added-section.event';
-//import { EventChangedSectionSection } from '../events/domain-events/event-changed-section-information.event';
-//import { EventChangedSpotLocation } from '../events/domain-events/event-changed-spot-location.event';
-//import { EventMarkedSportAsReserved } from '../events/domain-events/event-marked-sport-as-reserved.event';
+import { EventSection } from './evet-section.entity';
 
 export class EventId extends Uuid {}
 
@@ -45,6 +28,7 @@ export type EventConstructorProps = {
   total_spots: number;
   total_spots_reserved: number;
   partner_id: PartnerId | string;
+  sections: Set<EventSection> = new Set<EventSection>;
 };
 
 export class Event extends AggregateRoot {
@@ -56,7 +40,8 @@ export class Event extends AggregateRoot {
   total_spots: number;
   total_spots_reserved: number;
   partner_id: PartnerId;
-//  private _sections: ICollection<EventSection>;
+  //private _sections: ICollection<EventSection>;
+  sections: Set<EventSection> = new Set<EventSection>;
 
   constructor(props: EventConstructorProps) {
     super();
@@ -75,7 +60,8 @@ export class Event extends AggregateRoot {
       props.partner_id instanceof PartnerId
         ? props.partner_id
         : new PartnerId(props.partner_id);
-//    this._sections = MyCollectionFactory.create<EventSection>(this);
+    //this.sections = MyCollectionFactory.create<EventSection>(this);
+    this.sections = props.sections ?? new Set<EventSection>;
   }
 
   static create(command: CreateEventCommand) {
@@ -245,7 +231,7 @@ export class Event extends AggregateRoot {
       total_spots: this.total_spots,
       total_spots_reserved: this.total_spots_reserved,
       partner_id: this.partner_id.value,
-//      sections: [...this._sections].map((section) => section.toJSON()),
+      sections: [...this.sections].map((section) => section.toJSON()),
     };
   }
 }
