@@ -78,7 +78,7 @@ export abstract class ValueObject<Value = any> {
   toString = () => {
     if (typeof this.value !== 'object' || this.value === null) {
       try {
-        return this.value.toString();
+        return String(this.value);
       } catch (e) {
         return this.value + '';
       }

@@ -1,26 +1,36 @@
-import { AggregateRoot } from "src/@core/common/domain/aggregate-root";
-import { Name } from "src/@core/common/domain/value-objects/name.vo";
+import { AggregateRoot } from "../../../common/domain/aggregate-root";
+import Cpf from "../../../common/domain/value-objects/cpf.vo";
+import Uuid from "../../../common/domain/value-objects/uuid.vo";
+
+export class CustomerId extends Uuid {
+  constructor(id?: string) {
+    super(id);
+  }
+}
 
 export type CustomerConstructorProps = {
-  id?: string;
-  cpf: string;
-  name: Name;
+  id?: CustomerId | string;
+  cpf: Cpf;
+  name: string;
 }
 
 export class Customer extends AggregateRoot {
-  id?: string;
-  cpf: string;
-  name: Name;
+  id: CustomerId;
+  cpf: Cpf;
+  name: string;
 
   constructor(props: CustomerConstructorProps) {
     super();
-    this.id = props.id;
+    this.id = props.id instanceof CustomerId ? props.id : new CustomerId(props.id);
     this.cpf = props.cpf;
     this.name = props.name;
   }
 
-  static create(command: {name: Name, cpf: string}) {
-    return new Customer(command);
+  static create(command: {name: string, cpf: string}) {
+    return new Customer({
+      name: command.name,
+      cpf: new Cpf(command.cpf),
+    });
   }
 
   toJSON() {
