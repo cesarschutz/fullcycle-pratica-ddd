@@ -69,7 +69,7 @@ export class EventSection extends Entity {
 
   private initSpots() {
     for (let i = 0; i < this.total_spots; i++) {
-//      this.spots.add(EventSpot.create());
+      this.spots.add(EventSpot.create());
     }
   }
 
@@ -85,19 +85,6 @@ export class EventSection extends Entity {
     this.price = price;
   }
 
-//  changeLocation(command: { spot_id: EventSpotId; location: string }) {
-//    const spot = this.spots.find((spot) => spot.id.equals(command.spot_id));
-//    if (!spot) {
-//      throw new Error('Spot not found');
-//    }
-//    spot.changeLocation(command.location);
-//  }
-
-//  publishAll() {
-//    this.publish();
-//    this.spots.forEach((spot) => spot.publish());
-//  }
-
   publish() {
     this.is_published = true;
   }
@@ -106,47 +93,6 @@ export class EventSection extends Entity {
     this.is_published = false;
   }
 
-//  allowReserveSpot(spot_id: EventSpotId) {
-//    if (!this.is_published) {
-//      return false;
-//    }
-//
-//    const spot = this.spots.find((spot) => spot.id.equals(spot_id));
-//
-//    if (!spot) {
-//      throw new Error('Spot not found');
-//    }
-//
-//    if (spot.is_reserved) {
-//      return false;
-//    }
-//
-//    if (!spot.is_published) {
-//      return false;
-//    }
-//
-//    return true;
-//  }
-
-//  markSpotAsReserved(spot_id: EventSpotId) {
-//    const spot = this.spots.find((spot) => spot.id.equals(spot_id));
-//    if (!spot) {
-//      throw new Error('Spot not found');
-//    }
-//    if (spot.is_reserved) {
-//      throw new Error('Spot already reserved');
-//    }
-//    spot.markAsReserved();
-//  }
-//
-//  get spots(): ICollection<EventSpot> {
-//    return this._spots as ICollection<EventSpot>;
-//  }
-//
-//  set spots(spots: AnyCollection<EventSpot>) {
-//    this._spots = MyCollectionFactory.createFrom<EventSpot>(spots);
-//  }
-//
   toJSON() {
     return {
       id: this.id.value,

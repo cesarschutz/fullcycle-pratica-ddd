@@ -40,7 +40,6 @@ export class Event extends AggregateRoot {
   total_spots: number;
   total_spots_reserved: number;
   partner_id: PartnerId;
-  //private _sections: ICollection<EventSection>;
   sections: Set<EventSection> = new Set<EventSection>;
 
   constructor(props: EventConstructorProps) {
@@ -60,7 +59,6 @@ export class Event extends AggregateRoot {
       props.partner_id instanceof PartnerId
         ? props.partner_id
         : new PartnerId(props.partner_id);
-    //this.sections = MyCollectionFactory.create<EventSection>(this);
     this.sections = props.sections ?? new Set<EventSection>;
   }
 
@@ -72,154 +70,15 @@ export class Event extends AggregateRoot {
       total_spots: 0,
       total_spots_reserved: 0,
     });
-//    event.addEvent(
-//      new EventCreated(
-//        event.id,
-//        event.name,
-//        event.description,
-//        event.date,
-//        event.is_published,
-//        event.total_spots,
-//        event.total_spots_reserved,
-//        event.partner_id,
-//      ),
-//    );
+
     return event;
   }
 
-//  changeName(name: string) {
-//    this.name = name;
-//    this.addEvent(new EventChangedName(this.id, this.name));
-//  }
-//
-//  changeDescription(description: string | null) {
-//    this.description = description;
-//    this.addEvent(new EventChangedDescription(this.id, this.description));
-//  }
-//
-//  changeDate(date: Date) {
-//    this.date = date;
-//    this.addEvent(new EventChangedDate(this.id, this.date));
-//  }
-//
-//  publishAll() {
-//    this.publish();
-//    this._sections.forEach((section) => section.publishAll());
-//    this.addEvent(
-//      new EventPublishAll(
-//        this.id,
-//        this._sections.map((s) => s.id),
-//      ),
-//    );
-//  }
-//
-//  publish() {
-//    this.is_published = true;
-//    this.addEvent(new EventPublish(this.id));
-//  }
-//
-//  unPublish() {
-//    this.is_published = false;
-//    this.addEvent(new EventUnpublish(this.id));
-//  }
-//
-//  addSection(command: AddSectionCommand) {
-//    const section = EventSection.create(command);
-//    this._sections.add(section);
-//    this.total_spots += section.total_spots;
-//    this.addEvent(
-//      new EventAddedSection(
-//        this.id,
-//        section.name,
-//        section.description,
-//        section.total_spots,
-//        section.price,
-//        this.total_spots,
-//      ),
-//    );
-//  }
-//
-//  changeSectionInformation(command: {
-//    section_id: EventSectionId;
-//    name?: string;
-//    description?: string | null;
-//  }) {
-//    const section = this.sections.find((section) =>
-//      section.id.equals(command.section_id),
-//    );
-//    if (!section) {
-//      throw new Error('Section not found');
-//    }
-//    'name' in command && section.changeName(command.name);
-//    'description' in command && section.changeDescription(command.description);
-//    this.addEvent(
-//      new EventChangedSectionSection(
-//        this.id,
-//        section.id,
-//        section.name,
-//        section.description,
-//      ),
-//    );
-//  }
-//
-//  changeLocation(command: {
-//    section_id: EventSectionId;
-//    spot_id: EventSpotId;
-//    location: string;
-//  }) {
-//    const section = this.sections.find((section) =>
-//      section.id.equals(command.section_id),
-//    );
-//    if (!section) {
-//      throw new Error('Section not found');
-//    }
-//    section.changeLocation(command);
-//    this.addEvent(
-//      new EventChangedSpotLocation(
-//        this.id,
-//        section.id,
-//        command.spot_id,
-//        command.location,
-//      ),
-//    );
-//  }
-//
-//  allowReserveSpot(data: { section_id: EventSectionId; spot_id: EventSpotId }) {
-//    if (!this.is_published) {
-//      return false;
-//    }
-//
-//    const section = this.sections.find((s) => s.id.equals(data.section_id));
-//    if (!section) {
-//      throw new Error('Section not found');
-//    }
-//
-//    return section.allowReserveSpot(data.spot_id);
-//  }
-//
-//  markSpotAsReserved(command: {
-//    section_id: EventSectionId;
-//    spot_id: EventSpotId;
-//  }) {
-//    const section = this.sections.find((s) => s.id.equals(command.section_id));
-//
-//    if (!section) {
-//      throw new Error('Section not found');
-//    }
-//
-//    section.markSpotAsReserved(command.spot_id);
-//    this.addEvent(
-//      new EventMarkedSportAsReserved(this.id, section.id, command.spot_id),
-//    );
-//  }
-//
-//  get sections(): ICollection<EventSection> {
-//    return this._sections as ICollection<EventSection>;
-//  }
-//
-//  set sections(sections: AnyCollection<EventSection>) {
-//    this._sections = MyCollectionFactory.createFrom<EventSection>(sections);
-//  }
+  addSection(command: AddSectionCommand) {
+    const section = EventSection.create(command);
+    this.sections.add(section);
+    this.total_spots += section.total_spots;
+  }
 
   toJSON() {
     return {

@@ -11,16 +11,18 @@ test('deve criar um evento', () => {
       partner_id: new PartnerId(),
     });
 
-    const section = EventSection.create({
-        name: 'Sessão 1',
-        description: 'Descrição da sessão 1',
-        total_spots: 100,
-        price: 1000,
+    const spot = EventSpot.create();
+
+    event.addSection({
+      name: 'Sessão 1',
+      description: 'Descrição da sessão 1',
+      total_spots: 100,
+      price: 1000,
     });
 
-    const spot = EventSpot.create();
-    section.spots.add(spot);
+    expect(event.total_spots).toBe(100);
+    expect(event.sections.size).toBe(1);
 
-    event.sections.add(section);
-    console.dir(event, { depth : 10 });
+    const [section] = event.sections;
+    expect(section.spots.size).toBe(100);
 });
