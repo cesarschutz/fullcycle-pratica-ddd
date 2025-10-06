@@ -3,7 +3,7 @@ import { PartnerId } from './partner.entity';
 import Uuid from '../../../common/domain/value-objects/uuid.vo';
 import { EventSection } from './evet-section.entity';
 
-export class EventId extends Uuid {}
+export class EventId extends Uuid { }
 
 export type CreateEventCommand = {
   name: string;
@@ -72,6 +72,31 @@ export class Event extends AggregateRoot {
     });
 
     return event;
+  }
+
+  changeName(name: string) {
+    this.name = name;
+  }
+
+  changeDescription(description: string) {
+    this.description = description;
+  }
+
+  changeDate(date: Date) {
+    this.date = date;
+  }
+
+  publish() {
+    this.is_published = true;
+  }
+
+  unPublish() {
+    this.is_published = false;
+  }
+
+  publishAll() {
+    this.publish();
+    this.sections.forEach((s) => s.publishAll());
   }
 
   addSection(command: AddSectionCommand) {

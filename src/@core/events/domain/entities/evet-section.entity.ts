@@ -9,7 +9,7 @@ import { EventSpot } from './event-spot.entity';
 //import Uuid from '../../../common/domain/value-objects/uuid.vo';
 //import { EventSpot, EventSpotId } from './event-spot';
 
-export class EventSectionId extends Uuid {}
+export class EventSectionId extends Uuid { }
 
 export type EventSectionCreateCommand = {
   name: string;
@@ -87,6 +87,11 @@ export class EventSection extends Entity {
 
   publish() {
     this.is_published = true;
+  }
+
+  publishAll() {
+    this.is_published = true;
+    this.spots.forEach((s) => s.publish());
   }
 
   unPublish() {
