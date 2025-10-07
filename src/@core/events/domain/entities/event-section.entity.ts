@@ -92,6 +92,14 @@ export class EventSection extends Entity {
     this.is_published = false;
   }
 
+  changeLocation(command: { spot_id: EventSpotId; location: string }) {
+    const spot = this.spots.find((spot) => spot.id.equals(command.spot_id));
+    if (!spot) {
+      throw new Error('Spot not found');
+    }
+    spot.changeLocation(command.location);
+  }
+
   get spots(): ICollection<EventSpot> {
     return this._spots as ICollection<EventSpot>;
   }

@@ -1,6 +1,6 @@
 import { EventSpot } from '../event-spot.entity';
 import { Event } from '../event.entity';
-import { EventSection } from '../evet-section.entity';
+import { EventSection } from '../event-section.entity';
 import { PartnerId } from '../partner.entity';
 
 test('deve criar um evento', () => {

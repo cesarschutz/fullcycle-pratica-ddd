@@ -5,7 +5,7 @@ import { Customer } from '../../domain/entities/customer.entity';
 import { CustomerIdSchemaType } from './types/customer-id.schema-type';
 import { CpfSchemaType } from './types/cpf.schema-type';
 import { EventIdSchemaType } from './types/event-id.schema-type';
-import { EventSection } from '../../domain/entities/evet-section.entity';
+import { EventSection } from '../../domain/entities/event-section.entity';
 import { EventSectionIdSchemaType } from './types/event-section-id.schema-type';
 import { EventSpot } from '../../domain/entities/event-spot.entity';
 import { EventSpotIdSchemaType } from './types/event-spot-id.schema-type';
