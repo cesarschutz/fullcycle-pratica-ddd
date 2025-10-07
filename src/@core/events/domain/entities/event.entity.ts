@@ -2,7 +2,7 @@ import { AggregateRoot } from '../../../common/domain/aggregate-root';
 import { PartnerId } from './partner.entity';
 import Uuid from '../../../common/domain/value-objects/uuid.vo';
 import { EventSection } from './evet-section.entity';
-import { ICollection, MyCollectionFactory } from '../../../common/domain/my-collection';
+import { AnyCollection, ICollection, MyCollectionFactory } from '../../../common/domain/my-collection';
 
 export class EventId extends Uuid { }
 
@@ -104,6 +104,14 @@ export class Event extends AggregateRoot {
     const section = EventSection.create(command);
     this._sections.add(section);
     this.total_spots += section.total_spots;
+  }
+
+  get sections(): ICollection<EventSection> {
+    return this._sections as ICollection<EventSection>;
+  }
+
+  set sections(sections: AnyCollection<EventSection>) {
+    this._sections = MyCollectionFactory.createFrom<EventSection>(sections);
   }
 
   toJSON() {

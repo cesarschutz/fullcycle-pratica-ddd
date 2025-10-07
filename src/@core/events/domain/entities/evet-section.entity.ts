@@ -1,13 +1,7 @@
 import Uuid from '../../../common/domain/value-objects/uuid.vo';
 import { Entity } from '../../../common/domain/entity';
 import { EventSpot } from './event-spot.entity';
-//import {
-//  AnyCollection,
-//  ICollection,
-//  MyCollectionFactory,
-//} from '../../../common/domain/my-collection';
-//import Uuid from '../../../common/domain/value-objects/uuid.vo';
-//import { EventSpot, EventSpotId } from './event-spot';
+import { AnyCollection, ICollection, MyCollectionFactory } from '../../../common/domain/my-collection';
 
 export class EventSectionId extends Uuid { }
 
@@ -37,7 +31,7 @@ export class EventSection extends Entity {
   total_spots: number;
   total_spots_reserved: number;
   price: number;
-  spots: Set<EventSpot>;
+  private _spots: ICollection<EventSpot>;
 
   constructor(props: EventSectionConstructorProps) {
     super();
@@ -52,7 +46,7 @@ export class EventSection extends Entity {
     this.total_spots_reserved = props.total_spots_reserved;
     this.price = props.price;
     //this._spots = MyCollectionFactory.create<EventSpot>(this);
-    this.spots = props.spots ?? new Set<EventSpot>;
+    this._spots = MyCollectionFactory.create<EventSpot>(this);
   }
 
   static create(command: EventSectionCreateCommand) {
@@ -69,7 +63,7 @@ export class EventSection extends Entity {
 
   private initSpots() {
     for (let i = 0; i < this.total_spots; i++) {
-      this.spots.add(EventSpot.create());
+      this._spots.add(EventSpot.create());
     }
   }
 
@@ -96,6 +90,14 @@ export class EventSection extends Entity {
 
   unPublish() {
     this.is_published = false;
+  }
+
+  get spots(): ICollection<EventSpot> {
+    return this._spots as ICollection<EventSpot>;
+  }
+
+  set spots(spots: AnyCollection<EventSpot>) {
+    this._spots = MyCollectionFactory.createFrom<EventSpot>(spots);
   }
 
   toJSON() {
