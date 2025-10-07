@@ -29,7 +29,7 @@ export class CustomerService {
         input.name && customer.changeName(input.name);
 
         this.customerRepo.add(customer);
-
+        await this.uow.commit();
         return customer;
     }
 }
