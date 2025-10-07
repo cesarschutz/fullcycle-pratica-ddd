@@ -19,7 +19,7 @@ test('Event repository', async () => {
     password: 'root',
     type: 'mysql',
     forceEntityConstructor: true,
-    debug: true,
+    debug: false,
   });
   await orm.schema.refreshDatabase();
   const em = orm.em.fork();
@@ -46,7 +46,7 @@ test('Event repository', async () => {
   await em.clear();
 
   const eventFound = await eventRepo.findById(event.id);
-  console.log(eventFound);
+  console.dir(eventFound, { depth: 1000 });
 
   await orm.close();
 });
