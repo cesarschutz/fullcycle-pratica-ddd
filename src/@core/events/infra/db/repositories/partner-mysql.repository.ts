@@ -1,5 +1,5 @@
 import { EntityManager } from '@mikro-orm/mysql';
-import { IPartnerRepository } from '../../../domain/repositories/partner.repository.interface';
+import { IPartnerRepository } from '../../../domain/repositories/partner-repository.interface';
 import { Partner, PartnerId } from '../../../domain/entities/partner.entity';
 
 export class PartnerMysqlRepository implements IPartnerRepository {

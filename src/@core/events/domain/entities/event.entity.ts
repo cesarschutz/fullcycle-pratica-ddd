@@ -2,6 +2,7 @@ import { AggregateRoot } from '../../../common/domain/aggregate-root';
 import { PartnerId } from './partner.entity';
 import Uuid from '../../../common/domain/value-objects/uuid.vo';
 import { EventSection } from './evet-section.entity';
+import { ICollection, MyCollectionFactory } from '../../../common/domain/my-collection';
 
 export class EventId extends Uuid { }
 
@@ -28,7 +29,7 @@ export type EventConstructorProps = {
   total_spots: number;
   total_spots_reserved: number;
   partner_id: PartnerId | string;
-  sections: Set<EventSection> = new Set<EventSection>;
+  sections?: Set<EventSection>;
 };
 
 export class Event extends AggregateRoot {
@@ -40,7 +41,7 @@ export class Event extends AggregateRoot {
   total_spots: number;
   total_spots_reserved: number;
   partner_id: PartnerId;
-  sections: Set<EventSection> = new Set<EventSection>;
+  private _sections: ICollection<EventSection>;
 
   constructor(props: EventConstructorProps) {
     super();
@@ -59,7 +60,7 @@ export class Event extends AggregateRoot {
       props.partner_id instanceof PartnerId
         ? props.partner_id
         : new PartnerId(props.partner_id);
-    this.sections = props.sections ?? new Set<EventSection>;
+    this._sections = MyCollectionFactory.create<EventSection>(this);
   }
 
   static create(command: CreateEventCommand) {
@@ -96,12 +97,12 @@ export class Event extends AggregateRoot {
 
   publishAll() {
     this.publish();
-    this.sections.forEach((s) => s.publishAll());
+    this._sections.forEach((s) => s.publishAll());
   }
 
   addSection(command: AddSectionCommand) {
     const section = EventSection.create(command);
-    this.sections.add(section);
+    this._sections.add(section);
     this.total_spots += section.total_spots;
   }
 
@@ -115,7 +116,7 @@ export class Event extends AggregateRoot {
       total_spots: this.total_spots,
       total_spots_reserved: this.total_spots_reserved,
       partner_id: this.partner_id.value,
-      sections: [...this.sections].map((section) => section.toJSON()),
+      sections: [...this._sections].map((section) => section.toJSON()),
     };
   }
 }
