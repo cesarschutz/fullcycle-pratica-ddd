@@ -17,6 +17,7 @@ import { EventMysqlRepository } from '../infra/db/repositories/event-mysql.repos
 import { OrderService } from './order.service';
 import { OrderMysqlRepository } from '../infra/db/repositories/order-mysql.repository';
 import { SpotReservationMysqlRepository } from '../infra/db/repositories/spot-reservation-mysql.repository';
+import { PaymentGateway } from './payment.gateway';
 
 test('deve criar uma order', async () => {
   const orm = await MikroORM.init<MySqlDriver>({
@@ -82,6 +83,7 @@ test('deve criar uma order', async () => {
     eventRepo,
     spotReservationRepo,
     unitOfWork,
+    new PaymentGateway()
   );
 
   const op1 = orderService.create({
@@ -89,6 +91,7 @@ test('deve criar uma order', async () => {
     section_id: event.sections[0].id.value,
     customer_id: customer.id.value,
     spot_id: event.sections[0].spots[0].id.value,
+    card_token: "xxx"
   });
 
   const op2 = orderService.create({
@@ -96,6 +99,7 @@ test('deve criar uma order', async () => {
     section_id: event.sections[0].id.value,
     customer_id: customer.id.value,
     spot_id: event.sections[0].spots[0].id.value,
+    card_token: "xxx"
   });
 
   try {
