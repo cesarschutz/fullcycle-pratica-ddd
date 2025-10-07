@@ -88,7 +88,7 @@
   "mikro-orm": {
     "useTsNode": true,
     "configPaths": [
-      "./apps/mba-ddd-venda-ingresso/src/mikro-orm.config.ts",
+      "./src/mikro-orm.config.ts",
       "./dist/mikro-orm.config.js"
     ]
   }
